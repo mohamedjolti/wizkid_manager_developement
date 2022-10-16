@@ -1,20 +1,12 @@
-    cd backend
+    docker-compose build app
+    docker-compose up -d
     echo "install Laravel packages"
-    composer install
-    echo "migrate tables "
-    php artisan migrate 
-    php artisan passport:install
-    php artisan storage:link
-    
-    echo "install node packages"
-    cd ../frontend
-    npm install
-    
-    cd ../backend
-    php artisan serve
-    start cmd.exe @cmd /k "cd ../frontend && npm run serve"
-    #on ubuntu 
-    #gnome-terminal -- cd ../frontend &&  num run serve
+    docker-compose exec app composer install 
+    docker-compose exec app php artisan key:generate
+    docker-compose exec app php artisan migrate 
+    docker-compose exec app php artisan passport:install
+    docker-compose exec app php artisan storage:link
+    docker-compose exec app php artisan test
     
 
 

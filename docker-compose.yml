@@ -1,0 +1,79 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: jolti
+        uid: 1000
+      context: backend
+      dockerfile: DockerfileBack
+    image: wizkid_manager
+    container_name: wizkid-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./backend:/var/www
+    networks:
+      - wizkid_manager
+  
+
+  db:
+    image: mysql:5.7
+    container_name: wizkid-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wizkid_manager_db
+      MYSQL_ROOT_PASSWORD: jolti_pass_root
+      MYSQL_PASSWORD: jolti_pass
+      MYSQL_USER: jolti
+    ports:
+      - "6033:3306"
+    volumes:
+      - ./docker-compose/mysql:/var/lib/mysql
+      - ./docker-compose/mysqlsocket:/var/run/mysqld/
+    networks:
+      - wizkid_manager
+
+  nginx:
+    image: nginx:alpine
+    container_name: wizkid-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - wizkid_manager
+    depends_on:
+      - db
+      - app
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80 
+    networks:
+      - wizkid_manager
+    
+  vue-ui:
+    build:
+      context: frontend
+      dockerfile: DockerfileFront
+    ports:
+        - "8080:8080"
+    container_name: vue-ui
+    volumes:
+      - "/app/node_modules"
+      - "./frontend:/app"
+networks:
+  wizkid_manager:
+    driver: bridge
+
