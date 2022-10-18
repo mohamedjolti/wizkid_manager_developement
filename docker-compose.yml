@@ -41,13 +41,10 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
+      - ./backend:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - wizkid_manager
-    depends_on:
-      - db
-      - app
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: pma

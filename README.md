@@ -28,10 +28,10 @@ To install the dependencies and run the projects
 ```
 
 ## Issues
-1-fix nginx configuration
-2-Permission should be fixed automatically in case of errors in the script
-3-A new script should be added to delete all related images/containers for wizkid project
-4-Build script to be added
+1-Permission should be fixed automatically in case of errors in the script  
+2-A new script should be added to delete all related images/containers for wizkid project  
+3-Build script to be added  
+
 
 
 
