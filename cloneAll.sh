@@ -6,9 +6,9 @@
     mv DockerfileFront frontend
     mv DockerfileBack  backend
     echo "move nginx config"
-    mkdir docker-compose
+    mkdir -p docker-compose/nginx
+    mv wizkid.conf  docker-compose/nginx
     #correct the mistake of adding folder in lowwer case "tax of coding in windows"
     mv ./backend/app/services  ./backend/app/Services
-    mv wizkid.conf  docker-compose
 
 
